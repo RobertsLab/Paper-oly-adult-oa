@@ -10,6 +10,6 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, FUN = function(X) {
   do.call("require", list(X)) 
 })
-source("Analyses/panelcor.R")
 sessionInfo()
 
+source("Analyses/panelcor.R")
