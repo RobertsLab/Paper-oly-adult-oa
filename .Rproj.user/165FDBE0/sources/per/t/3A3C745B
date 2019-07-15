@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563222305815.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2551518353",
+    "id" : "3A3C745B",
+    "lastKnownWriteTime" : 1562710305,
+    "last_content_update" : 1562710305,
+    "path" : "~/Documents/roberts-lab/Paper-oly-adult-oa/Analyses/05_Larval-release.R",
+    "project_path" : "Analyses/05_Larval-release.R",
+    "properties" : {
+        "cursorPosition" : "21,18",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

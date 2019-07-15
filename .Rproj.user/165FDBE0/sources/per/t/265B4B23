@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563222282678.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2464795710",
+    "id" : "265B4B23",
+    "lastKnownWriteTime" : 1560203565,
+    "last_content_update" : 1560203565,
+    "path" : "~/Documents/roberts-lab/Paper-oly-adult-oa/Analyses/00_Packages.R",
+    "project_path" : "Analyses/00_Packages.R",
+    "properties" : {
+        "cursorPosition" : "13,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

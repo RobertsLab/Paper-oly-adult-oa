@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563222311857.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "316317979",
+    "id" : "7F253334",
+    "lastKnownWriteTime" : 1561409739,
+    "last_content_update" : 1561409739,
+    "path" : "~/Documents/roberts-lab/Paper-oly-adult-oa/Analyses/06_Larval-rearing-survival.R",
+    "project_path" : "Analyses/06_Larval-rearing-survival.R",
+    "properties" : {
+        "cursorPosition" : "55,38",
+        "scrollLine" : "47"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

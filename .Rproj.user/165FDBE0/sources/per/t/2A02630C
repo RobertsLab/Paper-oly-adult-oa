@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563222290777.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "826953404",
+    "id" : "2A02630C",
+    "lastKnownWriteTime" : 1563218079,
+    "last_content_update" : 1563218079,
+    "path" : "~/Documents/roberts-lab/Paper-oly-adult-oa/Analyses/01_Population-origin-map.R",
+    "project_path" : "Analyses/01_Population-origin-map.R",
+    "properties" : {
+        "cursorPosition" : "22,54",
+        "scrollLine" : "7"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

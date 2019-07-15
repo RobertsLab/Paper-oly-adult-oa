@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563222294526.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "720286169",
+    "id" : "928549E3",
+    "lastKnownWriteTime" : 1563218044,
+    "last_content_update" : 1563218044,
+    "path" : "~/Documents/roberts-lab/Paper-oly-adult-oa/Analyses/02_Temperatures.R",
+    "project_path" : "Analyses/02_Temperatures.R",
+    "properties" : {
+        "cursorPosition" : "10,82",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
