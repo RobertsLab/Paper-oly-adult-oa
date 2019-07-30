@@ -241,13 +241,13 @@ tests[35,] <- as.vector(unlist(chisq.test(CT.male.pop.allph[,-1], simulate.p.val
 CT.female.pop.allph <- t(table(histology$Female.Stage, histology$POPULATION))
 tests[36,] <- as.vector(unlist(chisq.test(CT.female.pop.allph[,-1], simulate.p.value = T, B=10000)[c("data.name", "statistic", "p.value")])) 
 
-
-# Supplemental Plots showing 
-
+# Plot gonad data by cohort & treatment 
 
 plot.cohort <- c("NF","HL", "SN", "K", "NF","HL", "SN", "K")
 plot.names <- c("Fidalgo Bay","Dabob Bay", "Oyster Bay C1", "Oyster Bay  C2", "Fidalgo Bay","Dabob Bay", "Oyster Bay C1", "Oyster Bay  C2")
 plot.temps <- c("6","6","6","6","10","10","10","10")
+
+# Dominant gonad stage by cohort 
 
 pdf(file="Figures/gonad-stage-by-cohort", height = 5.75, width = 7.6)
 par(mfrow=c(2,4), oma=c(5,5,0,2), mar=c(0,3,5,0), mgp=c(2.6,0.6,0))
@@ -280,12 +280,11 @@ mtext(side=2,text="10°C Treatment", outer=T,line=2, col="gray30", font=3, cex=1
 mtext(side=3,outer=T,line=-2, col="gray30", font=3, cex=1.2, text=expression(paste("Gonad sex by temperature, ", pCO[2], ", and cohort")))
 dev.off()
 
-# -------  Male gonad stage by each cohort
 plot.cohort <- c("NF","HL", "SN", "K", "NF","HL", "SN", "K")
 plot.names <- c("Fidalgo Bay","Dabob Bay", "Oyster Bay C1", "Oyster Bay  C2", "Fidalgo Bay","Dabob Bay", "Oyster Bay C1", "Oyster Bay  C2")
 plot.temps <- c("6","6","6","6","10","10","10","10")
 
-# check out colors for stage plots
+# ---- Sperm stage by each cohort, treatment
 
 pdf(file="Figures/male-gonad-stage-by-cohort", height = 5.75, width = 7.6)
 par(mfrow=c(2,4), oma=c(5,5,0,2), mar=c(0,3,5,0), mgp=c(2.6,0.6,0))
@@ -301,6 +300,8 @@ mtext(side=2,text="6°C Treatment", outer=T,line=2, col="gray30", font=3, cex=1.
 mtext(side=2,text="10°C Treatment", outer=T,line=2, col="gray30", font=3, cex=1.2, at=0.2)
 mtext(side=3,outer=T,line=-2, col="gray30", font=3, cex=1.2, text=expression(paste("Male gamete stage by temperature, ", pCO[2], ", and cohort")))
 dev.off()
+
+# Egg stage by each cohort, treatment
 
 pdf(file="Figures/female-gonad-stage-by-cohort", height = 5.75, width = 7.6)
 par(mfrow=c(2,4), oma=c(5,5,0,2), mar=c(0,3,5,0), mgp=c(2.6,0.6,0))

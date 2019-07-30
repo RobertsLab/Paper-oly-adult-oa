@@ -381,7 +381,7 @@ ggplot(spawning_group_sum, aes(x=Temperature:pH, y=maxday-100, fill=Temperature:
   geom_point(size=2.75, color="gray20", aes(shape=Population, group=Temperature:pH), position=position_jitterdodge(jitter.width = 0.75, jitter.height = .1, dodge.width = 0.5)) + 
   scale_shape_manual(values=c(15, 17, 19, 8), labels=c("Fidalgo Bay", "Dabob Bay", "Oyster Bay C1", "Oyster Bay C2")) +  theme_bw(base_size = 10) + 
   theme(plot.title = element_text(size = 15, hjust = 0.5, margin = margin(t = 30, b = 0), colour = "gray30"), axis.title.y = element_text(colour="gray30", size=11), axis.text.y = element_blank(), axis.title.x = element_text(colour="gray30", size=11), axis.text.x = element_text(size=11), legend.position = "none",panel.grid.minor = element_blank(), panel.grid.major.x = element_blank(), panel.grid.major.y = element_blank(), axis.ticks = element_blank(), panel.border = element_blank(), axis.line.x = element_line(color="gray30", size = .2), axis.line.y = element_line(color="gray30", size = .2)) + 
-  ggtitle("Peak larval release day") + ylab("Days in reproductive conditioning") + xlab("Treatment") + scale_y_continuous(limits=c(min=28,max=90), breaks = c(28,42,56,70,86)) + coord_flip() 
+  ggtitle("Peak larval release day") + ylab("No. days in spawning tanks") + xlab("Treatment") + scale_y_continuous(limits=c(min=28,max=90), breaks = c(28,42,56,70,86)) + coord_flip() 
 dev.off()
 
 

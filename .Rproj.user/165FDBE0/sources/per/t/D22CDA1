@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1563236733251.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4089165685",
+    "id" : "D22CDA1",
+    "lastKnownWriteTime" : 1550028551,
+    "last_content_update" : 1550028551,
+    "path" : "~/Documents/roberts-lab/O.lurida_Stress/Analyses/08_Juvenile-shell-length.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "11,16",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
