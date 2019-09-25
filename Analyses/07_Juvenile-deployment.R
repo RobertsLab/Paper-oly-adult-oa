@@ -151,6 +151,13 @@ Deploy.data.length[c("PH", "POUCH")] <- lapply(Deploy.data.length[c("PH", "POUCH
 # Check out length between habitat, within parental history, across all locations
 aggregate(length.mm ~ PH + POPULATION, Deploy.data.length, FUN = function(x) c(mean = mean(x), sd = sd(x)))
 
+# Does length relate to # oysters in each bag? 
+plot(y=Deploy.data.length$length.mm, x=Deploy.data.length$SURVIVED/Deploy.data.length$DEPLOYED)
+plot(y=Deploy.data.length$length.mm, x=Deploy.data.length$SURVIVED)
+qqnorm(Deploy.data.length$length.mm)
+summary(length.mm ~ SURVIVED + DEPLOYED, data=Deploy.data.length) #whoa that's  cool
+summary(lm(length.mm ~ I(SURVIVED/DEPLOYED), data=Deploy.data.length)) #poor model fit, but sign. term and + 
+
 # plot lengths by bay, site in bay (habitat), cohort, parental pH
 
 plot_list_length = list()
@@ -221,20 +228,22 @@ for (i in 1:4) {
 plot_list_growth
 
 #Statistics 
+
 hist((Deploy.growth$Growth+(-1*(min(Deploy.growth$Growth))+1))) #gamma dist. 
 Deploy.growth$Growth.t <- (Deploy.growth$Growth+(-1*(min(Deploy.growth$Growth))+1))
 
 # Fit model 
-Anova(glm.grw.1 <- glm(Growth.t ~ BAY*POPULATION*PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
-Anova(glm.grw.2 <- glm(Growth.t ~ BAY*POPULATION*PH.y-BAY:POPULATION:PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
-Anova(glm.grw.3 <- glm(Growth.t ~ BAY*POPULATION*PH.y-BAY:POPULATION:PH.y-PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
-Anova(glm.grw.4 <- glm(Growth.t ~ BAY*POPULATION*PH.y-BAY:POPULATION:PH.y-PH.y-BAY:POPULATION,family=Gamma(link="log"), data=Deploy.growth)) 
-Anova(glm.grw.5 <- glm(Growth.t ~ BAY*POPULATION*PH.y-BAY:POPULATION:PH.y-PH.y-BAY:POPULATION-BAY,family=Gamma(link="log"), data=Deploy.growth)) 
-Anova(glm.grw.6 <- glm(Growth.t ~ POPULATION+POPULATION:PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
+Anova(glm.grw.1 <- glm(Growth.t ~ BAY*COHORT*PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
+Anova(glm.grw.2 <- glm(Growth.t ~ BAY*COHORT*PH.y-BAY:COHORT:PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
+Anova(glm.grw.3 <- glm(Growth.t ~ BAY*COHORT*PH.y-BAY:COHORT:PH.y-PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
+Anova(glm.grw.4 <- glm(Growth.t ~ BAY*COHORT*PH.y-BAY:COHORT:PH.y-PH.y-BAY:COHORT,family=Gamma(link="log"), data=Deploy.growth)) 
+Anova(glm.grw.5 <- glm(Growth.t ~ BAY*COHORT*PH.y-BAY:COHORT:PH.y-PH.y-BAY:COHORT-BAY,family=Gamma(link="log"), data=Deploy.growth)) 
+Anova(glm.grw.6 <- glm(Growth.t ~ COHORT+COHORT:PH.y,family=Gamma(link="log"), data=Deploy.growth)) 
 AIC(glm.grw.1, glm.grw.2, glm.grw.3, glm.grw.4, glm.grw.5, glm.grw.6)
 summary(glm.grw.6)
 
-ggplot(Deploy.growth, aes(x=BAY:PH.y, y=Growth)) + geom_boxplot(aes(fill=PH.y)) + geom_vline(xintercept = c(2.5, 4.5, 6.5, 10.5, 12.5, 14.5), colour="gray") + geom_vline(xintercept = c(8.5), colour="gray20") + scale_fill_manual(values=c('#d1e5f0', '#67a9cf'), name="pCO2", labels = c("Amb.", "High")) + labs(title=paste("Relative Shell Height"),y=expression("Mean shell height change"), x=expression("Cohort : Parental pH")) + theme(legend.position="right") 
+ggplot(Deploy.growth, aes(x=COHORT:PH.y, y=Growth)) + geom_boxplot(aes(fill=PH.y)) + geom_vline(xintercept = c(2.5, 4.5, 6.5, 10.5, 12.5, 14.5), colour="gray") + geom_vline(xintercept = c(8.5), colour="gray20") + scale_fill_manual(values=c('#d1e5f0', '#67a9cf'), name="pCO2", labels = c("Amb.", "High")) + labs(title=paste("Relative Shell Height"),y=expression("Mean shell height change"), x=expression("Cohort : Parental pH")) + theme(legend.position="right") + geom_point()
+
 
 # ===========================
 #----------- Assess group mass data 
@@ -251,23 +260,81 @@ plot(Post.mass$Mass.post.per ~ Post.mass$POP.PH.HAB)
 Post.mass$BAY.PH.HAB <- as.factor(paste(Post.mass$BAY, Post.mass$PH, Deploy.growth$HABITAT, sep = "."))
 Post.mass$PH <- as.factor(Post.mass$PH)
 
-# Compare mean mass per oyster between parental pH, habitat 
-qqPlot(subset(Post.mass, Mass.post.per!="NA" & PH != "NA")$Mass.post.per)
-summary(aov(Mass.post.per ~ PH*HABITAT*BAY, data=subset(Post.mass, Mass.post.per!="NA" & PH != "NA")))
+# merge dataframes then calculate change in mean mass / oyster 
+Mass.change <- merge(x=Post.mass, y=Pre.mass, by.x="POUCH", by.y="BAG")
+Mass.change$mass.change <- Mass.change$Mass.post.per-Mass.change$Mass.pre.per
 
-# Plot mean oyster mass by parental pCO2, bay 
-ggplot(subset(Post.mass, Mass.post.per!="NA" & PH != "NA"),aes(x=BAY:PH, y=Mass.post.per, fill=PH)) + 
+# Plot change in mean mass 
+ggplot(subset(Mass.change, mass.change!="NA" & PH.y != "NA"),aes(x=COHORT:BAY:PH.y, y=mass.change, fill=PH.y)) + 
   geom_boxplot() +
-  geom_point(size=2.75, color="gray20", aes(shape=POPULATION, group=PH), position=position_jitterdodge(jitter.width = 0.75, jitter.height = .1, dodge.width = 0.5)) + 
-  scale_shape_manual(values=c(15, 17, 19, 8), labels=c("Fidalgo Bay", "Dabob Bay", "Oyster Bay C1", "Oyster Bay C2")) + 
-  labs(title="Mean mass per oyster (g) after deployment",y=expression("Mass/oyster (g)")) + 
+  geom_point(size=2.75, color="gray20", position=position_jitterdodge(jitter.width = 0.75, jitter.height = .1, dodge.width = 0.5)) + 
+  labs(title="Change in mean mass per oyster (g)",y=expression("Delta mass/oyster (g)")) + 
   theme_bw(base_size = 14) + xlab("Parental pCO2, bay") +
   theme(plot.title = element_text(face = 'bold',size = 20, hjust = 0)) + scale_fill_manual(values=c('#d1e5f0', '#67a9cf'))
 
+# is mass related to survival?
+plot(x=Mass.change$SURVIVED/Mass.change$DEPLOYED.x, y=Mass.change$mass.change) #maybe positively 
+
+# Compare mass change among factors 
+hist(Mass.change$mass.change^0.5) 
+shapiro.test(Mass.change$mass.change^0.5)
+summary(aov(mass.change^0.5 ~  PH.y*BAY*COHORT, data=Mass.change)) 
+summary(aov(mass.change^0.5 ~  BAY*COHORT, data=Mass.change)) 
+summary(aov(mass.change^0.5 ~  BAY+COHORT, data=Mass.change)) 
+TukeyHSD(aov(mass.change^0.5 ~ BAY+COHORT, data=Mass.change)) 
+aggregate(mass.change ~ COHORT, data=Mass.change, mean)
+aggregate(mass.change ~ BAY, data=Mass.change, mean)
+
+# Plot change in mean mass by bay
+ggplot(subset(Mass.change, mass.change!="NA" & PH.y != "NA"),aes(x=BAY, y=mass.change, fill=BAY)) + 
+  geom_boxplot() +
+  geom_point(size=2.75, color="gray20", position=position_jitterdodge(jitter.width = 0.75, jitter.height = .1, dodge.width = 0.5)) + 
+  labs(title="Change in mean mass per oyster (g)",y=expression("Delta mass/oyster (g)")) + 
+  theme_bw(base_size = 14) + xlab("BAY") +
+  theme(plot.title = element_text(face = 'bold',size = 20, hjust = 0)) 
+
+# Plot change in mean mass by bay
+ggplot(subset(Mass.change, mass.change!="NA" & PH.y != "NA"),aes(x=COHORT, y=mass.change, fill=COHORT)) + 
+  geom_boxplot() +
+  geom_point(size=2.75, color="gray20", position=position_jitterdodge(jitter.width = 0.75, jitter.height = .1, dodge.width = 0.5)) + 
+  labs(title="Change in mean mass per oyster (g)",y=expression("Delta mass/oyster (g)")) + 
+  theme_bw(base_size = 14) + xlab("COHORT") +
+  theme(plot.title = element_text(face = 'bold',size = 20, hjust = 0)) 
 
 
+### Assess whether environmental factors predicted survival  
+
+env.data <- read.csv(file="Data/juvenile-environmental-summ-data.csv", header = T, stringsAsFactors = T)
+Deploy.data.env <- data.frame(merge(x=Deploy.data, y=env.data, by.x=c("BAY", "HABITAT"), by.y=c("Site", "Habitat")))
 
 
+pdf(file = "Figures/deployment-survival-envdata.pdf", width = 12, height = 6)
+par(mfrow=c(2,5))
+for (i in c(29:38)) {
+  plot(x=as.factor(Deploy.data.env[,i]), y=Deploy.data.env[,11]/Deploy.data.env[,10], main=colnames(Deploy.data.env[i]), xlab="Env. data", ylab="Proportion survived")
+}
+dev.off()
+
+pdf(file = "Figures/envdata-correations.pdf", width = 15, height = 12)
+pairs(na.omit(Deploy.data.env[, c(29:38)]), lower.panel=panel.smooth, upper.panel=panel.cor)  
+dev.off()
+
+# check associations with environmental data to select variables. Only include significantt. 
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Chl.mean, data=Deploy.data.env, binomial), test="Wald")  #no 
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Temp.mean, data=Deploy.data.env, binomial), test="Wald") #yes 
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ DO.mean, data=Deploy.data.env, binomial), test="Wald") #no
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Salinity.mean, data=Deploy.data.env, binomial), test="Wald") #yes
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ pH.mean, data=Deploy.data.env, binomial), test="Wald") #yes
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Chl.sd, data=Deploy.data.env, binomial), test="Wald") #no 
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Temp.sd, data=Deploy.data.env, binomial), test="Wald") #yes
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ DO.sd, data=Deploy.data.env, binomial), test="Wald") #yes
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Salinity.sd, data=Deploy.data.env, binomial), test="Wald") #no 
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ pH.sd, data=Deploy.data.env, binomial), test="Wald") #no 
+
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Temp.mean+pH.mean+Salinity.mean+DO.sd+Temp.sd, data=Deploy.data.env, binomial), test="Wald", type = "III")
+alias( lm( cbind(SURVIVED, DEPLOYED) ~ Temp.mean+pH.mean+Salinity.mean+DO.sd+Temp.sd, data=Deploy.data.env)) # Temp.sd linearly dependent. Remove.
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Temp.mean+pH.mean+Salinity.mean+DO.sd, data=Deploy.data.env, binomial), test="Wald", type = "II")
+Anova(glm(cbind(SURVIVED, DEPLOYED) ~ Temp.mean+pH.mean+DO.sd, data=Deploy.data.env, binomial), test="Wald", type = "II") # Final 
 
 # ===================================
 # Old plots, showing separate cohorts (probably remove) 

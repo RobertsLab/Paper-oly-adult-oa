@@ -335,18 +335,20 @@ fecundity.pop <- group_by(larvae.0, Population, Temperature, pH) %>% dplyr::muta
 
 plot.cohort <- levels(fecundity.pop$Population)
 
+# NEED TO CHANGE THESE PLOTS: INCREASE FONT SIZE, MAKE GRAY SCALE W/ SHAPES
 plot_list = list()
 for (i in 1:4) {
   p <- ggplot() +
-    geom_line(data=subset(fecundity.pop, Population == plot.cohort[i]), aes(x=CalDay-101, y=cum.percap, group=Temperature:pH, color=Temperature:pH), size=1.6) + theme_bw(base_size = 10) + ylab("No. of larvae") + xlab(label="Days in reproductive conditioning") + 
+    geom_line(data=subset(fecundity.pop, Population == plot.cohort[i]), aes(x=CalDay-101, y=cum.percap, group=Temperature:pH, color=Temperature:pH), size=1) + theme_bw(base_size = 14) + ylab("No. of larvae") + xlab(label="No. days spawning") + 
     labs(title=(plot.names[i])) +
-    theme(plot.title = element_text(size = 13, hjust=0.08, margin = margin(t = 30, b = 0), colour = "gray30"), 
-          axis.title.y = element_blank(), axis.title.x = element_text(colour="gray30"), axis.text.x = element_text(size=10), axis.text.y = element_text(size=10)) +
+    theme(plot.title = element_text(size = 14, hjust=0.08, margin = margin(t = 30, b = 0), colour = "gray30"), 
+          axis.title.y = element_blank(), axis.title.x = element_text(colour="gray30"), axis.text.x = element_text(size=12), axis.text.y = element_text(size=12)) +
     scale_x_continuous(limits=c(min=28,max=90), breaks = c(28,42,56,70,86)) +
     scale_y_continuous(label=comma, breaks=scales::pretty_breaks(n = 5)) +
     theme(legend.position = "none", legend.text = element_text(colour="gray30", size=14), legend.title = element_text(colour="gray30", size=14),  panel.grid.minor = element_blank(), 
-          panel.grid.major.x = element_blank(), panel.border = element_blank(), axis.text.y = element_text(size=10), axis.line.x = element_line(color="gray30", size = .2), axis.line.y = element_line(color="gray30", size = .2)) +
-    scale_color_manual(name="Temperature/pCO2",values=c('#67a9cf', '#2166ac', '#ef8a62', '#b2182b'), label=c("6°C/Amb", "6°C/High", "10°C/Amb", "10°C/High")) + geom_point(data=subset(fecundity.pop, Population == plot.cohort[i]), aes(x=CalDay-101, y=cum.percap, group=Temperature:pH, fill=Temperature:pH), shape=21, size=2, stroke=.2) + scale_fill_manual(values=c("#d1e5f0","#67a9cf","#fddbc7","#ef8a62"))
+          panel.grid.major.x = element_blank(), panel.border = element_blank(), axis.line.x = element_line(color="gray30", size = .2), axis.line.y = element_line(color="gray30", size = .2)) +
+    scale_color_manual(name="Temperature/pCO2",values=c('#67a9cf', '#2166ac', '#ef8a62', '#b2182b'), label=c("6°C/Amb", "6°C/High", "10°C/Amb", "10°C/High")) + 
+    geom_point(data=subset(fecundity.pop, Population == plot.cohort[i]), aes(x=CalDay-101, y=cum.percap, group=Temperature:pH, fill=Temperature:pH), shape=21, size=2, stroke=.2) + scale_fill_manual(values=c("#d1e5f0","#67a9cf","#fddbc7","#ef8a62"))
   plot_list[[i]] <- p
 }
 
@@ -422,3 +424,40 @@ ggplot(spawning_group_sum, aes(x=first.big-100, y=maxday-100)) +
   ggtitle("Larval release timing") + theme_bw(base_size=12) +
   theme(plot.title = element_text(size = 16, hjust = 0, colour = "gray30"), axis.text.x = element_text(colour="gray30", size=14), axis.title.x = element_text(colour="gray30", size=14), axis.title.y = element_text(colour="gray30", size=14), axis.text.y = element_text(colour="gray30", size=14), legend.text = element_text(colour="gray30", size=14), legend.title = element_text(colour="gray30", size=14)) + xlab("Days to release onset") + ylab("Days to maximum release")
 dev.off()
+
+
+
+####  TRY GRAYSCALE  
+
+# NEED TO CHANGE THESE PLOTS: INCREASE FONT SIZE, MAKE GRAY SCALE W/ SHAPES
+plot_list = list()
+for (i in 1:4) {
+  p <- ggplot() +
+    geom_line(data=subset(fecundity.pop, Population == plot.cohort[i]), aes(x=CalDay-101, y=cum.percap, group=Temperature:pH, color=Temperature:pH), size=1) + theme_bw(base_size = 14) + ylab("No. of larvae") + xlab(label="No. days spawning") + 
+    labs(title=(plot.names[i])) +
+    theme(plot.title = element_text(size = 14, hjust=0.08, margin = margin(t = 30, b = 0), colour = "gray30"), 
+          axis.title.y = element_blank(), axis.title.x = element_text(colour="gray30"), 
+          axis.text.x = element_text(size=12), axis.text.y = element_text(size=12)) +
+    scale_x_continuous(limits=c(min=28,max=90), breaks = c(28,42,56,70,86)) +
+    scale_y_continuous(label=comma, breaks=scales::pretty_breaks(n = 5)) +
+    theme(legend.position = "bottom", 
+          legend.text = element_text(colour="gray30", size=14), 
+          legend.title = element_text(colour="gray30", size=14),  
+          panel.grid.minor = element_blank(), 
+          panel.grid.major.x = element_blank(), 
+          panel.border = element_blank(), 
+          axis.line.x = element_line(color="gray30", size = .2), 
+          axis.line.y = element_line(color="gray30", size = .2)) +
+    scale_color_manual(name="Temperature/pCO2",values=c("#cccccc", "#969696", "#636363", "#252525"), label=c("6°C/Amb", "6°C/High", "10°C/Amb", "10°C/High")) + 
+    geom_point(data=subset(fecundity.pop, Population == plot.cohort[i]), aes(x=CalDay-101, y=cum.percap, group=Temperature:pH, fill=Temperature:pH, shape=Temperature:pH), size=3, stroke=.2) + scale_fill_manual(values=c("#cccccc", "#969696", "#636363", "#252525")) +
+    scale_shape_manual(values = c(21, 22, 23, 24)) 
+  plot_list[[i]] <- p
+}
+
+# Save plots to pdf. Makes a separate file for each plot.
+for (i in 1:4) {
+  file_name = paste("Figures/cumulative_larvae_", i, ".pdf", sep="")
+  pdf(file_name, width = 6, height = 3)
+  print(plot_list[[i]])
+  dev.off()
+}

@@ -3,9 +3,9 @@
 # Copy dataframes so I don't mess up the other ones 
 #Oly.size.summary3.c <- Oly.size.summary3
 Survival.post.c <- Survival.post
-Deploy.data.c <- Deploy.data
-Deploy.growth.c <- Deploy.growth
-Post.mass.c <- Post.mass
+Deploy.data.c <- Deploy.data  
+Deploy.growth.c <- Deploy.growth  
+Post.mass.c <- Post.mass  
 
 # CREATE COMMON GROUP ID IN EACH DATAFRAME 
 
@@ -115,3 +115,5 @@ text(x=oly.multivar$survival.setters, y=oly.multivar$Deployment.survival, labels
 
 plot(x=oly.multivar$Juv.stocked, y=oly.multivar$Deployment.survival, col=oly.multivar$PH)
 text(x=oly.multivar$Juv.stocked, y=oly.multivar$Deployment.survival, labels=oly.multivar$Population)
+
+View(oly.multivar)

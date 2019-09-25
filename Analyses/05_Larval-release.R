@@ -335,6 +335,7 @@ fecundity.pop <- group_by(larvae.0, Population, Temperature, pH) %>% dplyr::muta
 
 plot.cohort <- levels(fecundity.pop$Population)
 
+# NEED TO CHANGE THESE PLOTS: INCREASE FONT SIZE, MAKE GRAY SCALE W/ SHAPES
 plot_list = list()
 for (i in 1:4) {
   p <- ggplot() +

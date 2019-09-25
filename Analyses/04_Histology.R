@@ -28,7 +28,7 @@ tests[2,] <- as.vector(unlist(chisq.test(CT.malestage.pre[,-1], simulate.p.value
 CT.femstage.pre <- table(subset(histology, SAMPLING=="FEBRUARY")$TEMPERATURE, subset(histology, SAMPLING=="FEBRUARY")$Female.Stage)
 tests[3,] <- as.vector(unlist(chisq.test(CT.femstage.pre[,-1], simulate.p.value = T, B = 10000)[c("data.name", "statistic", "p.value")]))
 #10 vs. 6C: 2.1488 p-value = 0.669
-?chisq.test
+
 CT.sex.pre <- table(subset(histology, SAMPLING=="FEBRUARY")$TEMPERATURE, subset(histology, SAMPLING=="FEBRUARY")$Sex.simple)
 tests[4,] <- as.vector(unlist(chisq.test(CT.sex.pre, simulate.p.value = T, B = 10000)[c("data.name", "statistic", "p.value")]))
 #10 vs. 6C: X-squared = 7.9551, p-value = 0.1634
@@ -78,6 +78,7 @@ tests[12,] <- as.vector(unlist(chisq.test(CT.femstage[-2,-1,"6"], simulate.p.val
 tests[13,] <- as.vector(unlist(chisq.test(CT.femstage[-3,-1,"6"], simulate.p.value = T, B = 10000)[c("data.name", "statistic", "p.value")])) 
 #pre to low, p=0.3464                                             
 
+# Compare female gamete stage in 10C treatments 
 tests[14,] <- as.vector(unlist(chisq.test(CT.femstage[-1,2:4,"10"], simulate.p.value = T, B = 10000)[c("data.name", "statistic", "p.value")])) 
 #ambient vs. low, p=1                                  
 tests[15,] <- as.vector(unlist(chisq.test(CT.femstage[-2,2:4,"10"], simulate.p.value = T, B = 10000)[c("data.name", "statistic", "p.value")])) 
@@ -135,7 +136,6 @@ tests[32,] <- as.vector(unlist(chisq.test(rbind(CT.femstage[3,2:4,c("6")],CT.fem
 tests$holm <- p.adjust(tests$pvalue, "holm")
 tests$BH <- p.adjust(tests$pvalue, "BH")
 View(tests) # review - opting to go with the less conservative, due to many different correlations in data 
-
 
 round(prop.table(CT.malestage[-1,,"6"],1 ), digits = 3)
 round(prop.table(CT.malestage[-1,,"10"],1 ), digits = 3)
@@ -318,3 +318,6 @@ mtext(side=2,text="10°C Treatment", outer=T,line=2, col="gray30", font=3, cex=1
 mtext(side=3,outer=T,line=-2, col="gray30", font=3, cex=1.2, text=expression(paste("Female gamete stage by temperature, ", pCO[2], ", and cohort")))
 dev.off()
 
+
+# extra plot for fun 
+ggplot(data=histology, aes(y=Male.Stage, x=Female.Stage, col=Sex.redo)) + geom_jitter(size=2)
